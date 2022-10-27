@@ -11,10 +11,10 @@
 <canvas id="snakeboard" width="400" height="400"></canvas>
 <style>
     #snakeboard {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        display: block;
+        margin: auto;
+        height: auto;
+        width: auto;
     }
 
     #score {
@@ -29,20 +29,23 @@
 </body>
 
 <script>
+    const snakeboard = document.getElementById("snakeboard");
+    const snakeboard_ctx = snakeboard.getContext("2d");
+
     const board_border = 'black';
     const board_background = "white";
     const snake_col = 'lightblue';
     const snake_border = 'darkblue';
 
     let snake = [
-        {x: 200, y: 200},
-        {x: 190, y: 200},
-        {x: 180, y: 200},
-        {x: 170, y: 200},
-        {x: 160, y: 200}
+        {x: snakeboard.height / 2, y: snakeboard.width / 2},
+        {x: snakeboard.height / 2 - snakeboard.height / 40, y: snakeboard.width / 2},
+        {x: snakeboard.height / 2 - snakeboard.height / 40 * 2, y: snakeboard.width / 2},
+        {x: snakeboard.height / 2 - snakeboard.height / 40 * 3, y: snakeboard.width / 2},
+        {x: snakeboard.height / 2 - snakeboard.height / 40 * 4, y: snakeboard.width / 2}
     ]
     let changing_direction = false;
-    let dx = 10;
+    let dx = snakeboard.width / 40;
     let dy = 0;
     let score = 0;
 
@@ -50,9 +53,6 @@
 
     let food_x = 0;
     let food_y = 0;
-
-    const snakeboard = document.getElementById("snakeboard");
-    const snakeboard_ctx = snakeboard.getContext("2d");
 
     document.addEventListener("keydown", input)
 
@@ -101,8 +101,8 @@
     function drawSnakePart(snakePart) {
         snakeboard_ctx.fillStyle = snake_col;
         snakeboard_ctx.strokestyle = snake_border;
-        snakeboard_ctx.fillRect(snakePart.x, snakePart.y, 10, 10);
-        snakeboard_ctx.strokeRect(snakePart.x, snakePart.y, 10, 10);
+        snakeboard_ctx.fillRect(snakePart.x, snakePart.y, snakeboard.width / 40, snakeboard.width / 40);
+        snakeboard_ctx.strokeRect(snakePart.x, snakePart.y, snakeboard.width / 40, snakeboard.width / 40);
     }
 
     function move_snake() {
@@ -142,29 +142,29 @@
         if (changing_direction) return;
         changing_direction = true;
 
-        const goingUp = dy === -10;
-        const goingDown = dy === 10;
-        const goingRight = dx === 10;
-        const goingLeft = dx === -10;
+        const goingUp = dy === -snakeboard.width / 40;
+        const goingDown = dy === snakeboard.width / 40;
+        const goingRight = dx === snakeboard.width / 40;
+        const goingLeft = dx === -snakeboard.width / 40;
 
         if (keyPressed === LEFT_KEY && !goingRight) {
-            dx = -10;
+            dx = -snakeboard.width / 40;
             dy = 0;
         }
 
         if (keyPressed === UP_KEY && !goingDown) {
             dx = 0;
-            dy = -10;
+            dy = -snakeboard.width / 40;
         }
 
         if (keyPressed === RIGHT_KEY && !goingLeft) {
-            dx = 10;
+            dx = snakeboard.width / 40;
             dy = 0;
         }
 
         if (keyPressed === DOWN_KEY && !goingUp) {
             dx = 0;
-            dy = 10;
+            dy = snakeboard.width / 40;
         }
 
     }
@@ -177,9 +177,9 @@
             }
         }
         const hitLeftWall = snake[0].x < 0;
-        const hitRightWall = snake[0].x > snakeboard.width - 10;
+        const hitRightWall = snake[0].x > snakeboard.width - snakeboard.width / 40;
         const hitTopWall = snake[0].y < 0;
-        const hitBottomWall = snake[0].y > snakeboard.height - 10;
+        const hitBottomWall = snake[0].y > snakeboard.height - snakeboard.width / 40;
 
         return hitLeftWall || hitRightWall || hitTopWall || hitBottomWall
     }
@@ -189,11 +189,11 @@
     }
 
     function generateFoodX() {
-        return random_food(0, snakeboard.width - 10);
+        return random_food(0, snakeboard.width - snakeboard.width / 40);
     }
 
     function generateFoodY() {
-        return random_food(0, snakeboard.height - 10);
+        return random_food(0, snakeboard.height - snakeboard.width / 40);
     }
 
     function hasEaten() {
@@ -204,8 +204,8 @@
     function drawFood() {
         snakeboard_ctx.fillStyle = 'lightgreen';
         snakeboard_ctx.strokestyle = 'darkgreen';
-        snakeboard_ctx.fillRect(food_x, food_y, 10, 10);
-        snakeboard_ctx.strokeRect(food_x, food_y, 10, 10);
+        snakeboard_ctx.fillRect(food_x, food_y, snakeboard.width / 40, snakeboard.width / 40);
+        snakeboard_ctx.strokeRect(food_x, food_y, snakeboard.width / 40, snakeboard.width / 40);
     }
 </script>
 </html>
