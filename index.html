@@ -54,7 +54,7 @@
 
     const board_border = 'black';
     const board_background = "#383838";
-    const snake_col = 'white';
+    const snake_col = 'green';
     const snake_border = 'darkblue';
 
     let isPaused = false;
@@ -148,6 +148,14 @@
 
     function drawSnake() {
         snake.forEach(drawSnakePart)
+        drawHead(snake[0])
+    }
+
+    function drawHead(snakeHead) {
+        snakeboard_ctx.fillStyle = "white";
+        snakeboard_ctx.strokestyle = snake_border;
+        snakeboard_ctx.fillRect(snakeHead.x, snakeHead.y, snakeboard.width / 40, snakeboard.width / 40);
+        snakeboard_ctx.strokeRect(snakeHead.x, snakeHead.y, snakeboard.width / 40, snakeboard.width / 40);
     }
 
     function drawSnakePart(snakePart) {
