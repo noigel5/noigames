@@ -8,27 +8,36 @@
 <div id="score">0</div>
 <div class="description">reset: enter</div>
 <div class="description">pause: space</div>
-<canvas id="snakeboard" width="400" height="400"></canvas>
+<div>Board size:</div>
+<label>
+    <input id="slider" type="range" min="100" max="800" step="100" value="800">
+</label>
+<canvas id="snakeboard" width="800" height="800"></canvas>
 </body>
 
 <style>
+    div {
+        text-align: center;
+    }
     #snakeboard {
         display: block;
         margin: auto;
         height: auto;
         width: auto;
     }
-
     #score {
-        text-align: center;
         font-size: 140px;
     }
     .description {
-        text-align: center;
         font-size: 50px;
+    }
+    #slider {
+        display: block;
+        margin: auto;
     }
 </style>
 <script>
+    const slider = document.getElementById("slider")
     const snakeboard = document.getElementById("snakeboard");
     const snakeboard_ctx = snakeboard.getContext("2d");
 
@@ -36,6 +45,22 @@
     const board_background = "white";
     const snake_col = 'lightblue';
     const snake_border = 'darkblue';
+
+    let isPaused = false;
+
+    slider.addEventListener("input", (e) => {
+        if (has_game_ended()) {
+            gotReseted = true;
+            snakeboard.height = e.target.value
+            snakeboard.width = e.target.value
+            main();
+        }
+        gotReseted = true;
+        snakeboard.height = e.target.value
+        snakeboard.width = e.target.value
+    });
+
+    document.addEventListener("keydown", input)
 
     let snake = [
         {x: snakeboard.height / 2, y: snakeboard.width / 2},
@@ -49,21 +74,37 @@
     let dy = 0;
     let score = 0;
 
-    let isPaused = false;
-
     let food_x = 0;
     let food_y = 0;
 
-    document.addEventListener("keydown", input)
+    let gotReseted = false;
 
     main();
 
     function move() {
+        if (gotReseted) {
+            gotReseted = false;
+            snake = [
+                {x: snakeboard.height / 2, y: snakeboard.width / 2},
+                {x: snakeboard.height / 2 - snakeboard.height / 40, y: snakeboard.width / 2},
+                {x: snakeboard.height / 2 - snakeboard.height / 40 * 2, y: snakeboard.width / 2},
+                {x: snakeboard.height / 2 - snakeboard.height / 40 * 3, y: snakeboard.width / 2},
+                {x: snakeboard.height / 2 - snakeboard.height / 40 * 4, y: snakeboard.width / 2}
+            ]
+            changing_direction = false;
+            dx = snakeboard.width / 40;
+            dy = 0;
+            score = 0;
+            document.getElementById("score").innerHTML = score;
+            main();
+            return;
+        }
         if (isPaused) {
-            document.getElementById('score').innerText = 'PAUSED'
+            document.getElementById('score').innerText = 'PAUSED';
             return;
         }
         if (has_game_ended()) {
+            debugger
             document.getElementById('score').innerText = 'Game Over';
             return;
         }
@@ -126,7 +167,12 @@
         const keyPressed = event.keyCode;
 
         if (keyPressed === ENTER) {
-            window.location.reload();
+            if (has_game_ended()) {
+                gotReseted = true;
+                main();
+            }
+            gotReseted = true;
+            return;
         }
 
         if (keyPressed === SPACE) {
@@ -170,6 +216,9 @@
     }
 
     function has_game_ended() {
+        if (gotReseted) {
+            return false;
+        }
         for (let i = 4; i < snake.length; i++) {
             const has_collided = snake[i].x === snake[0].x && snake[i].y === snake[0].y
             if (has_collided) {
@@ -185,7 +234,7 @@
     }
 
     function random_food(min, max) {
-        return Math.round((Math.random() * (max - min) + min) / 10) * 10;
+        return Math.round((Math.random() * (max - min) + min) / (snakeboard.width / 40)) * (snakeboard.width / 40);
     }
 
     function generateFoodX() {
@@ -193,7 +242,7 @@
     }
 
     function generateFoodY() {
-        return random_food(0, snakeboard.height - snakeboard.width / 40);
+        return random_food(0, snakeboard.height - snakeboard.height / 40);
     }
 
     function hasEaten() {
