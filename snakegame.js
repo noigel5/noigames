@@ -66,7 +66,6 @@ function move() {
         return;
     }
     if (has_game_ended()) {
-        debugger
         if (score > record) {
             record = score;
             document.getElementById('record').innerHTML = record;
