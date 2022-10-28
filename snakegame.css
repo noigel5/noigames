@@ -1,0 +1,55 @@
+body {
+    background-color: #181818;
+    display: grid;
+    grid-template-areas:
+            'nav header'
+            'nav main'
+            'nav footer';
+    grid-template-columns: 33% 67%;
+}
+
+header {
+    grid-area: header;
+}
+
+main {
+    grid-area: main;
+}
+
+nav {
+    grid-area: nav;
+    font-size: 50px;
+}
+
+footer {
+    grid-area: footer;
+}
+
+div {
+    color: white;
+}
+
+#snakeboard {
+    display: block;
+    height: auto;
+    width: auto;
+}
+
+#score {
+    font-size: 140px;
+}
+
+.description {
+    font-size: 50px;
+}
+
+#boardSize {
+    margin-top: 10px;
+}
+
+#slider {
+    cursor: pointer;
+    width: 250px;
+    display: block;
+    margin-bottom: 10px;
+}
