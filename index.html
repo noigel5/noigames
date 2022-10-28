@@ -10,14 +10,18 @@
 <div class="description">pause: space</div>
 <div>Board size:</div>
 <label>
-    <input id="slider" type="range" min="100" max="800" step="100" value="800">
+    <input id="slider" type="range" min="100" max="1200" step="100" value="600">
 </label>
-<canvas id="snakeboard" width="800" height="800"></canvas>
+<canvas id="snakeboard" width="600" height="600"></canvas>
 </body>
 
 <style>
+    body {
+        background-color: #181818;
+    }
     div {
         text-align: center;
+        color: white;
     }
     #snakeboard {
         display: block;
@@ -32,8 +36,11 @@
         font-size: 50px;
     }
     #slider {
+        cursor: pointer;
+        width: 250px;
         display: block;
         margin: auto;
+        margin-bottom: 10px;
     }
 </style>
 <script>
@@ -42,8 +49,8 @@
     const snakeboard_ctx = snakeboard.getContext("2d");
 
     const board_border = 'black';
-    const board_background = "white";
-    const snake_col = 'lightblue';
+    const board_background = "#383838";
+    const snake_col = 'white';
     const snake_border = 'darkblue';
 
     let isPaused = false;
@@ -251,8 +258,8 @@
     }
 
     function drawFood() {
-        snakeboard_ctx.fillStyle = 'lightgreen';
-        snakeboard_ctx.strokestyle = 'darkgreen';
+        snakeboard_ctx.fillStyle = 'red';
+        snakeboard_ctx.strokestyle = 'white';
         snakeboard_ctx.fillRect(food_x, food_y, snakeboard.width / 40, snakeboard.width / 40);
         snakeboard_ctx.strokeRect(food_x, food_y, snakeboard.width / 40, snakeboard.width / 40);
     }
