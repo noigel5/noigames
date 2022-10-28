@@ -5,29 +5,59 @@
 </head>
 
 <body>
-<div id="score">0</div>
-<div class="description">reset: enter</div>
-<div class="description">pause: space</div>
-<div>Board size:</div>
-<label>
-    <input id="slider" type="range" min="100" max="1200" step="100" value="600">
-</label>
-<canvas id="snakeboard" width="600" height="600"></canvas>
+<header>
+    <div id="score">0</div>
+</header>
+<main>
+    <div class="description">reset: enter</div>
+    <div class="description">pause: space</div>
+    <div id="boardSize">Board size:</div>
+    <label>
+        <input id="slider" type="range" min="100" max="1200" step="100" value="600">
+    </label>
+</main>
+<nav>
+    <div>record: <var id="record">0</var></div>
+</nav>
+<footer>
+    <canvas id="snakeboard" width="600" height="600"></canvas>
+</footer>
 </body>
 
 <style>
     body {
         background-color: #181818;
+        display: grid;
+        grid-template-areas:
+            'nav header'
+            'nav main'
+            'nav footer';
+        grid-template-columns: 33% 67%;
+    }
+
+    header {
+        grid-area: header;
+    }
+
+    main {
+        grid-area: main;
+    }
+
+    nav {
+        grid-area: nav;
+        font-size: 50px;
+    }
+
+    footer {
+        grid-area: footer;
     }
 
     div {
-        text-align: center;
         color: white;
     }
 
     #snakeboard {
         display: block;
-        margin: auto;
         height: auto;
         width: auto;
     }
@@ -40,11 +70,15 @@
         font-size: 50px;
     }
 
+    #boardSize {
+        margin-top: 10px;
+    }
+
     #slider {
         cursor: pointer;
         width: 250px;
         display: block;
-        margin: auto auto 10px;
+        margin-bottom: 10px;
     }
 </style>
 <script>
@@ -58,6 +92,7 @@
     const snake_border = 'darkblue';
 
     let isPaused = false;
+    let record = 0;
 
     slider.addEventListener("input", (e) => {
         if (has_game_ended()) {
@@ -111,12 +146,16 @@
             return;
         }
         if (isPaused) {
-            document.getElementById('score').innerText = 'PAUSED';
+            document.getElementById('score').innerHTML = 'PAUSED';
             return;
         }
         if (has_game_ended()) {
             debugger
-            document.getElementById('score').innerText = 'Game Over';
+            if (score > record) {
+                record = score;
+                document.getElementById('record').innerHTML = record;
+            }
+            document.getElementById('score').innerHTML = 'Game Over';
             return;
         }
         changing_direction = false;
@@ -241,7 +280,7 @@
         for (let i = 4; i < snake.length; i++) {
             const has_collided = snake[i].x === snake[0].x && snake[i].y === snake[0].y
             if (has_collided) {
-                return has_collided
+                return has_collided;
             }
         }
         const hitLeftWall = snake[0].x < 0;
@@ -249,7 +288,7 @@
         const hitTopWall = snake[0].y < 0;
         const hitBottomWall = snake[0].y > snakeboard.height - snakeboard.width / 40;
 
-        return hitLeftWall || hitRightWall || hitTopWall || hitBottomWall
+        return hitLeftWall || hitRightWall || hitTopWall || hitBottomWall;
     }
 
     function random_food(min, max) {
