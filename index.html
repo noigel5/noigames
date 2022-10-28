@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
     <title>Snake Game</title>
 </head>
@@ -39,8 +39,7 @@
         cursor: pointer;
         width: 250px;
         display: block;
-        margin: auto;
-        margin-bottom: 10px;
+        margin: auto auto 10px;
     }
 </style>
 <script>
@@ -253,8 +252,7 @@
     }
 
     function hasEaten() {
-        const has_eaten = snake[0].x == food_x && snake[0].y == food_y;
-        return has_eaten
+        return snake[0].x === food_x && snake[0].y === food_y
     }
 
     function drawFood() {
