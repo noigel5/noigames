@@ -6,9 +6,11 @@
 
 <body>
 <div id="score">0</div>
-<div id="description">reset: enter</div>
-<div id="description">pause: space</div>
+<div class="description">reset: enter</div>
+<div class="description">pause: space</div>
 <canvas id="snakeboard" width="400" height="400"></canvas>
+</body>
+
 <style>
     #snakeboard {
         display: block;
@@ -21,13 +23,11 @@
         text-align: center;
         font-size: 140px;
     }
-    #description {
+    .description {
         text-align: center;
         font-size: 50px;
     }
 </style>
-</body>
-
 <script>
     const snakeboard = document.getElementById("snakeboard");
     const snakeboard_ctx = snakeboard.getContext("2d");
