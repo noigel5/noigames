@@ -8,7 +8,9 @@ const snake_col = 'green';
 const snake_border = 'darkblue';
 
 let isPaused = false;
-let record = 0;
+const HIGHSCORE_KEY = "snakeHighscore";
+let highscore = window.localStorage.getItem(HIGHSCORE_KEY) || 0;
+document.getElementById('record').innerHTML = highscore;
 
 slider.addEventListener("input", (e) => {
     if (has_game_ended()) {
@@ -66,9 +68,10 @@ function move() {
         return;
     }
     if (has_game_ended()) {
-        if (score > record) {
-            record = score;
-            document.getElementById('record').innerHTML = record;
+        if (score > highscore) {
+            highscore = score;
+            window.localStorage.setItem(HIGHSCORE_KEY, highscore);
+            document.getElementById('record').innerHTML = highscore;
         }
         document.getElementById('score').innerHTML = 'Game Over';
         return;
@@ -120,7 +123,7 @@ function drawSnakePart(snakePart) {
 }
 
 function move_snake() {
-    const head = {x: snake[0].x + dx, y: snake[0].y + dy}; //versteh ich noch nicht ganz
+    const head = {x: snake[0].x + dx, y: snake[0].y + dy};
     snake.unshift(head);
     if (hasEaten()) {
         score += 10;
@@ -128,6 +131,11 @@ function move_snake() {
         return
     }
     snake.pop();
+}
+
+function resetHighscore() {
+    window.localStorage.removeItem(HIGHSCORE_KEY);
+    document.getElementById('record').innerHTML = 0;
 }
 
 function input(event) {
