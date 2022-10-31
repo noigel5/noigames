@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <title>Snake Game</title>
+    <title>Snake</title>
     <link rel="stylesheet" href="snakegame.css">
 </head>
 
@@ -19,8 +19,11 @@
 </main>
 <nav>
     <div>highscore: <var id="record">0</var></div>
-    <button onclick="resetHighscore()">reset</button>
+    <button onclick="resetHighscore()">Reset</button>
 </nav>
+<aside>
+    <button onclick="window.location.href='tetris.html';">Tetris</button>
+</aside>
 <footer>
     <canvas id="snakeboard" width="600" height="600"></canvas>
 </footer>

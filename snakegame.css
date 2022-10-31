@@ -2,24 +2,31 @@ body {
     background-color: #181818;
     display: grid;
     grid-template-areas:
-            'nav header'
-            'nav main'
-            'nav footer';
-    grid-template-columns: 33% 67%;
+            'nav header aside'
+            'nav main aside'
+            'footer footer footer';
+    grid-template-columns: 20% 60% 20%;
     font-family: fantasy;
 }
 
 header {
     grid-area: header;
+    text-align: center;
 }
 
 main {
     grid-area: main;
+    text-align: center;
 }
 
 nav {
     grid-area: nav;
     font-size: 50px;
+}
+
+aside {
+    grid-area: aside;
+    text-align: right;
 }
 
 footer {
@@ -31,6 +38,7 @@ div {
 }
 
 #snakeboard {
+    margin: auto;
     display: block;
     height: auto;
     width: auto;
@@ -44,11 +52,27 @@ div {
     font-size: 50px;
 }
 
+button {
+    background-color: #383838;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+}
+button:hover {
+    border-color: white;
+}
+
 #boardSize {
     margin-top: 10px;
 }
 
 #slider {
+    margin-left: auto;
+    margin-right: auto;
     cursor: pointer;
     width: 250px;
     display: block;
