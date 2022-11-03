@@ -1,0 +1,17 @@
+.game-board {
+    border: solid 2px;
+    border-color: black;
+    background-color: #383838;
+}
+
+.split {
+    display: flex;
+}
+
+.marginRight {
+    margin-right: auto;
+}
+
+.marginLeft {
+    margin-left: auto;
+}

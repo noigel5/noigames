@@ -1,0 +1,21 @@
+#snakeboard {
+    margin: auto;
+    display: block;
+    height: auto;
+    width: auto;
+    border: solid 2px;
+    border-color: black;
+}
+
+#boardSize {
+    margin-top: 10px;
+}
+
+#slider {
+    margin-left: auto;
+    margin-right: auto;
+    cursor: pointer;
+    width: 250px;
+    display: block;
+    margin-bottom: 10px;
+}
