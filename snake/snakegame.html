@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <title>Snake</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+<header>
+  <div id="title">0</div>
+</header>
+<main>
+  <div class="description">reset: enter</div>
+  <div class="description">pause: space</div>
+  <div id="boardSize">Board size:</div>
+  <label>
+    <input id="slider" type="range" min="100" max="1200" step="100" value="600">
+  </label>
+</main>
+<nav>
+  <div>highscore: <var id="record">0</var></div>
+  <button onclick="resetHighscore()">Reset</button>
+</nav>
+<aside>
+  <button onclick="window.location.href='../index.html';">Hauptseite</button>
+</aside>
+<footer>
+  <canvas id="snakeboard" width="600" height="600"></canvas>
+</footer>
+</body>
+<script src="snakegame.js"></script>
+</html>

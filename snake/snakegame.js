@@ -59,12 +59,12 @@ function move() {
         dx = snakeboard.width / 40;
         dy = 0;
         score = 0;
-        document.getElementById("score").innerHTML = score;
+        document.getElementById("title").innerHTML = score;
         main();
         return;
     }
     if (isPaused) {
-        document.getElementById('score').innerHTML = 'PAUSED';
+        document.getElementById('title').innerHTML = 'PAUSED';
         return;
     }
     if (has_game_ended()) {
@@ -73,7 +73,7 @@ function move() {
             window.localStorage.setItem(HIGHSCORE_KEY, highscore);
             document.getElementById('record').innerHTML = highscore;
         }
-        document.getElementById('score').innerHTML = 'Game Over';
+        document.getElementById('title').innerHTML = 'Game Over';
         return;
     }
     changing_direction = false;
@@ -127,7 +127,7 @@ function move_snake() {
     snake.unshift(head);
     if (hasEaten()) {
         score += 10;
-        document.getElementById('score').innerHTML = score;
+        document.getElementById('title').innerHTML = score;
         return
     }
     snake.pop();
@@ -159,7 +159,7 @@ function input(event) {
     if (keyPressed === SPACE) {
         if (isPaused) {
             isPaused = false;
-            document.getElementById('score').innerHTML = score;
+            document.getElementById('title').innerHTML = score;
             move();
         } else {
             isPaused = true;

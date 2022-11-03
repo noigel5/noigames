@@ -1,32 +1,31 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <title>Snake</title>
-    <link rel="stylesheet" href="snakegame.css">
+    <title>Hauptseite</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 <header>
-    <div id="score">0</div>
+    <div id="title">Hauptseite</div>
 </header>
 <main>
-    <div class="description">reset: enter</div>
-    <div class="description">pause: space</div>
-    <div id="boardSize">Board size:</div>
-    <label>
-        <input id="slider" type="range" min="100" max="1200" step="100" value="600">
-    </label>
+    <div class="description">Games:</div>
+    <br>
+    <div>
+        <button onclick="window.location.href='snake/snakegame.html';">Snake</button>
+    </div>
+    <div>
+        <button onclick="window.location.href='tetris/tetris.html';">Tetris</button>
+    </div>
 </main>
 <nav>
-    <div>highscore: <var id="record">0</var></div>
-    <button onclick="resetHighscore()">Reset</button>
+
 </nav>
 <aside>
-    <button onclick="window.location.href='tetris.html';">Tetris</button>
+
 </aside>
 <footer>
-    <canvas id="snakeboard" width="600" height="600"></canvas>
+
 </footer>
 </body>
-<script src="snakegame.js"></script>
 </html>
