@@ -4,6 +4,12 @@
     background-color: #383838;
 }
 
+.next {
+    border: solid 2px;
+    border-color: black;
+    background-color: #383838;
+}
+
 .split {
     display: flex;
 }
