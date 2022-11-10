@@ -1,12 +1,10 @@
 .game-board {
-    border: solid 2px;
-    border-color: black;
+    border: 2px solid black;
     background-color: #383838;
 }
 
 .next {
-    border: solid 2px;
-    border-color: black;
+    border: 2px solid black;
     background-color: #383838;
 }
 
