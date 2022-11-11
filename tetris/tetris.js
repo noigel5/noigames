@@ -85,7 +85,7 @@ class Board {
     }
 
     valid(p) {
-        return p.shape.every((row, dy) => {
+        return p.SHAPES[board.piece.typeId].every((row, dy) => {
             return row.every((value, dx) => {
                 let x = p.x + dx;
                 let y = p.y + dy;
@@ -103,20 +103,64 @@ class Board {
 class Piece {
     constructor(ctx) {
         this.ctx = ctx;
-        this.color = 'blue';
-        this.shape = [
-            [2, 0, 0],
-            [2, 2, 2],
-            [0, 0, 0]
+        this.COLORS = [
+            'cyan',
+            'blue',
+            'orange',
+            'yellow',
+            'green',
+            'purple',
+            'red'
+        ];
+        this.SHAPES = [
+            [
+                [0, 0, 0, 0],
+                [1, 1, 1, 1],
+                [0, 0, 0, 0],
+                [0, 0, 0, 0]
+            ],
+            [
+                [2, 0, 0],
+                [2, 2, 2],
+                [0, 0, 0]
+            ],
+            [
+                [0, 0, 0],
+                [3, 3, 3],
+                [0, 0, 3]
+            ],
+            [
+                [4, 4],
+                [4, 4]
+            ],
+            [
+                [0, 5, 5],
+                [5, 5, 0],
+                [0, 0, 0]
+            ],
+            [
+                [0, 6, 0],
+                [6, 6, 6],
+                [0, 0, 0]
+            ],
+            [
+                [7, 7, 0],
+                [0, 7, 7],
+                [0, 0, 0]
+            ]
         ];
 
         this.x = 3;
         this.y = 0;
     }
 
+    randomizeTetrominoType(noOfTypes) {
+        return Math.floor(Math.random() * noOfTypes);
+    }
+
     draw() {
-        this.ctx.fillStyle = this.color;
-        this.shape.forEach((row, y) => {
+        this.ctx.fillStyle = this.COLORS[board.piece.typeId];
+        this.SHAPES[board.piece.typeId].forEach((row, y) => {
             row.forEach((value, x) => {
                 if (value > 0) {
                     this.ctx.fillRect(this.x + x, this.y + y, 1, 1);
@@ -131,13 +175,13 @@ class Piece {
     }
 
     rotate() {
-        for (let y = 0; y < this.shape.length; ++y) {
+        for (let y = 0; y < this.SHAPES[board.piece.typeId].length; ++y) {
             for (let x = 0; x < y; ++x) {
-                [this.shape[x][y], this.shape[y][x]] = [this.shape[y][x], this.shape[x][y]];
+                [this.SHAPES[board.piece.typeId][x][y], this.SHAPES[board.piece.typeId][y][x]] = [this.SHAPES[board.piece.typeId][y][x], this.SHAPES[board.piece.typeId][x][y]];
             }
         }
 
-        this.shape.forEach(row => row.reverse());
+        this.SHAPES[board.piece.typeId].forEach(row => row.reverse());
 
         return this;
     }
@@ -149,7 +193,8 @@ function play() {
     board.reset();
     console.table(board.grid);
 
-    let piece = new Piece(tetrisboard_ctx);
-    piece.draw()
-    board.piece = piece;
+    board.piece = new Piece(tetrisboard_ctx);
+
+    board.piece.typeId = board.piece.randomizeTetrominoType(7);
+    board.piece.draw();
 }
