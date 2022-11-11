@@ -188,6 +188,7 @@ class Piece {
 }
 
 let board = new Board();
+time = {start: 0, elapsed: 0, level: 1000};
 
 function play() {
     board.reset();
@@ -197,4 +198,32 @@ function play() {
 
     board.piece.typeId = board.piece.randomizeTetrominoType(7);
     board.piece.draw();
+    animate();
+}
+
+function drop() {
+    return board.piece.SHAPES[board.piece.typeId].every((row, dy) => {
+        return row.every((value) => {
+            let y = board.piece.y + dy + 1;
+            return board.isEmpty(value) || board.aboveFloor(y)
+        });
+    })
+}
+
+function animate(now = 0) {
+    time.elapsed = now - time.start;
+
+    if (time.elapsed > time.level) {
+
+        time.start = now;
+        if (drop()) {
+            board.piece.y += 1;
+            tetrisboard_ctx.clearRect(0, 0, tetrisboard_ctx.canvas.width, tetrisboard_ctx.canvas.height);
+
+            board.piece.draw();
+        } else {
+            return
+        }
+    }
+    requestAnimationFrame(animate);
 }
