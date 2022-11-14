@@ -214,6 +214,15 @@ let lines = 0;
 let clearedLines = 0;
 let points = 0;
 
+function resetHighscore() {
+    window.localStorage.removeItem(TETRISHIGHSCORE_KEY);
+    document.getElementById('record').innerHTML = 0;
+}
+
+const TETRISHIGHSCORE_KEY = "tetrisHighscore";
+let highscore = window.localStorage.getItem(TETRISHIGHSCORE_KEY) || 0;
+document.getElementById('tetrisHighscore').innerHTML = highscore;
+
 const POINTS = {
     SINGLE: 100,
     DOUBLE: 300,
@@ -228,9 +237,9 @@ const LEVEL = {
     0: 1000,
     1: 900,
     2: 800,
-    3: 600,
-    4: 400,
-    5: 200
+    3: 700,
+    4: 600,
+    5: 500
 }
 Object.freeze(LEVEL);
 
@@ -258,6 +267,17 @@ function drop() {
             return board.isEmpty(value) || board.aboveFloor(y) && board.grid[board.piece.y + dy + 1][board.piece.x + dx] === 0
         });
     })
+}
+
+function gameOver() {
+    highscore = points;
+    window.localStorage.setItem(TETRISHIGHSCORE_KEY, highscore);
+    document.getElementById('tetrisHighscore').innerHTML = highscore;
+    tetrisboard_ctx.fillStyle = '#181818';
+    tetrisboard_ctx.fillRect(1, 3, 8, 1.2);
+    tetrisboard_ctx.font = '1px Arial';
+    tetrisboard_ctx.fillStyle = 'white';
+    tetrisboard_ctx.fillText('GAME OVER', 1.8, 4);
 }
 
 function clearLine() {
@@ -322,6 +342,10 @@ function animate(now = 0) {
             board.drawBoard();
             board.piece.draw();
         } else {
+            if (board.piece.y === 0) {
+                this.gameOver();
+                return;
+            }
             board.piece.freeze();
             clearLine();
             console.table(board.grid);
