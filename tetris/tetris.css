@@ -1,0 +1,21 @@
+.game-board {
+    border: 2px solid black;
+    background-color: #383838;
+}
+
+.next {
+    border: 2px solid black;
+    background-color: #383838;
+}
+
+.split {
+    display: flex;
+}
+
+.marginRight {
+    margin-right: auto;
+}
+
+.marginLeft {
+    margin-left: auto;
+}

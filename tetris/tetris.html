@@ -3,22 +3,35 @@
 <head>
     <title>Tetris</title>
     <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="tetris.css">
 </head>
 <body>
 <header>
-
+    <div id="title">Tetris</div>
 </header>
 <main>
-
+    <div class="split">
+        <canvas id="board" class="game-board marginLeft"></canvas>
+        <div class="marginRight">
+            <div class="description">Score: <span id="score">0</span></div>
+            <div class="description">Lines: <span id="lines">0</span></div>
+            <div class="description">Level: <span id="level">0</span></div>
+            <canvas id="next" class="next"></canvas>
+        </div>
+    </div>
+    <br>
+    <button onclick="play()" class="play-button">Play</button>
 </main>
 <nav>
 
 </nav>
 <aside>
     <button onclick="window.location.href='../index.html';">Hauptseite</button>
+    <br>
 </aside>
 <footer>
 
 </footer>
 </body>
+<script src="tetris.js"></script>
 </html>
