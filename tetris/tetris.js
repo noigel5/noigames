@@ -49,6 +49,7 @@ document.addEventListener('keydown', event => {
 
             tetrisboard_ctx.clearRect(0, 0, tetrisboard_ctx.canvas.width, tetrisboard_ctx.canvas.height);
 
+            board.drawBoard();
             board.piece.draw();
         } else {
             if (event.code === KEY.UP) {
@@ -92,9 +93,20 @@ class Board {
                 return (
                     this.isEmpty(value) ||
                     (this.insideWalls(x) &&
-                        this.aboveFloor(y)
+                        this.aboveFloor(y) && board.grid[board.piece.y + dy + 1][board.piece.x + dx] === 0
                     )
                 );
+            });
+        });
+    }
+
+    drawBoard() {
+        this.grid.forEach((row, y) => {
+            row.forEach((value, x) => {
+                if (value > 0) {
+                    tetrisboard_ctx.fillStyle = board.piece.COLORS[value - 1];
+                    tetrisboard_ctx.fillRect(x, y, 1, 1);
+                }
             });
         });
     }
@@ -185,10 +197,26 @@ class Piece {
 
         return this;
     }
+
+    freeze() {
+        board.piece.SHAPES[board.piece.typeId].forEach((row, y) => {
+            row.forEach((value, x) => {
+                if (value > 0) {
+                    board.grid[y + board.piece.y][x + board.piece.x] = value;
+                }
+            });
+        });
+    }
 }
 
 let board = new Board();
 time = {start: 0, elapsed: 0, level: 1000};
+
+function drawPiece() {
+    board.piece.typeId = board.piece.randomizeTetrominoType(7);
+    board.piece.draw();
+    animate();
+}
 
 function play() {
     board.reset();
@@ -196,16 +224,14 @@ function play() {
 
     board.piece = new Piece(tetrisboard_ctx);
 
-    board.piece.typeId = board.piece.randomizeTetrominoType(7);
-    board.piece.draw();
-    animate();
+    drawPiece();
 }
 
 function drop() {
     return board.piece.SHAPES[board.piece.typeId].every((row, dy) => {
-        return row.every((value) => {
+        return row.every((value, dx) => {
             let y = board.piece.y + dy + 1;
-            return board.isEmpty(value) || board.aboveFloor(y)
+            return board.isEmpty(value) || board.aboveFloor(y) && board.grid[board.piece.y + dy + 1][board.piece.x + dx] === 0
         });
     })
 }
@@ -220,8 +246,16 @@ function animate(now = 0) {
             board.piece.y += 1;
             tetrisboard_ctx.clearRect(0, 0, tetrisboard_ctx.canvas.width, tetrisboard_ctx.canvas.height);
 
+            board.drawBoard();
             board.piece.draw();
         } else {
+            board.piece.freeze();
+            console.table(board.grid);
+
+            board.drawBoard();
+            board.piece.x = 3;
+            board.piece.y = 0;
+            drawPiece();
             return
         }
     }
