@@ -343,7 +343,7 @@ function animate(now = 0) {
             board.piece.draw();
         } else {
             if (board.piece.y === 0) {
-                this.gameOver();
+                gameOver();
                 return;
             }
             board.piece.freeze();
