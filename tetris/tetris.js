@@ -210,7 +210,31 @@ class Piece {
 }
 
 let board = new Board();
-time = {start: 0, elapsed: 0, level: 1000};
+let lines = 0;
+let clearedLines = 0;
+let points = 0;
+
+const POINTS = {
+    SINGLE: 100,
+    DOUBLE: 300,
+    TRIPLE: 500,
+    TETRIS: 800,
+    SOFT_DROP: 1,
+    HARD_DROP: 2
+}
+Object.freeze(POINTS);
+
+const LEVEL = {
+    0: 1000,
+    1: 900,
+    2: 800,
+    3: 600,
+    4: 400,
+    5: 200
+}
+Object.freeze(LEVEL);
+
+time = {start: 0, elapsed: 0, level: LEVEL["0"]};
 
 function drawPiece() {
     board.piece.typeId = board.piece.randomizeTetrominoType(7);
@@ -236,16 +260,56 @@ function drop() {
     })
 }
 
-function isLineFull() {
+function clearLine() {
     board.grid.forEach((row, y) => {
         if (row.every(value => value > 0)) {
+            lines++;
+            clearedLines++;
             board.grid.splice(y, 1);
             board.grid.unshift(Array(COLS).fill(0));
         }
     });
+    if (clearedLines === 1) {
+        points += POINTS.SINGLE
+    }
+    if (clearedLines === 2) {
+        points += POINTS.DOUBLE
+    }
+    if (clearedLines === 3) {
+        points += POINTS.TRIPLE
+    }
+    if (clearedLines === 4) {
+        points += POINTS.TETRIS
+    }
+    document.getElementById("score").innerHTML = points;
+    document.getElementById("lines").innerHTML = lines;
+
+    clearedLines = 0;
 }
 
 function animate(now = 0) {
+
+    if (lines >= 10) {
+        time.level = LEVEL["1"];
+        document.getElementById("level").innerHTML = "1";
+    }
+    if (lines >= 20) {
+        time.level = LEVEL["2"];
+        document.getElementById("level").innerHTML = "2";
+    }
+    if (lines >= 30) {
+        time.level = LEVEL["3"];
+        document.getElementById("level").innerHTML = "3";
+    }
+    if (lines >= 40) {
+        time.level = LEVEL["4"];
+        document.getElementById("level").innerHTML = "4";
+    }
+    if (lines >= 50) {
+        time.level = LEVEL["5"];
+        document.getElementById("level").innerHTML = "5";
+    }
+
     time.elapsed = now - time.start;
 
     if (time.elapsed > time.level) {
@@ -259,7 +323,7 @@ function animate(now = 0) {
             board.piece.draw();
         } else {
             board.piece.freeze();
-            isLineFull();
+            clearLine();
             console.table(board.grid);
 
             board.drawBoard();
