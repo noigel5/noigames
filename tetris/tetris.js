@@ -43,14 +43,14 @@ document.addEventListener('keydown', event => {
                     board.piece.move(p);
                     p = moves[KEY.DOWN](board.piece);
                 }
+                board.piece.freeze();
             } else {
                 board.piece.move(p);
             }
-
             tetrisboard_ctx.clearRect(0, 0, tetrisboard_ctx.canvas.width, tetrisboard_ctx.canvas.height);
 
-            board.drawBoard();
             board.piece.draw();
+            board.drawBoard();
         } else {
             if (event.code === KEY.UP) {
                 board.piece.rotate();
@@ -236,6 +236,15 @@ function drop() {
     })
 }
 
+function isLineFull() {
+    board.grid.forEach((row, y) => {
+        if (row.every(value => value > 0)) {
+            board.grid.splice(y, 1);
+            board.grid.unshift(Array(COLS).fill(0));
+        }
+    });
+}
+
 function animate(now = 0) {
     time.elapsed = now - time.start;
 
@@ -250,6 +259,7 @@ function animate(now = 0) {
             board.piece.draw();
         } else {
             board.piece.freeze();
+            isLineFull();
             console.table(board.grid);
 
             board.drawBoard();
