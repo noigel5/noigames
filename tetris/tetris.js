@@ -312,7 +312,9 @@ function drop() {
 }
 
 function gameOver() {
-    highscore = points;
+    if (highscore < points) {
+        highscore = points;
+    }
     window.localStorage.setItem(TETRISHIGHSCORE_KEY, highscore);
     document.getElementById('tetrisHighscore').innerHTML = highscore;
     tetrisboard_ctx.fillStyle = '#181818';
