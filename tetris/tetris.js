@@ -269,6 +269,11 @@ function play() {
     board.reset();
     console.table(board.grid);
 
+    points = 0;
+    lines = 0;
+    document.getElementById("score").innerHTML = points;
+    document.getElementById("lines").innerHTML = lines;
+
     board.piece = new Piece(tetrisboard_ctx);
 
     drawPiece();
