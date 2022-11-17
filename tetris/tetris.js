@@ -27,6 +27,37 @@ const moves = {
     [KEY.UP]: p => ({...p})
 };
 
+let lines = 0;
+let clearedLines = 0;
+let points = 0;
+
+const POINTS = {
+    SINGLE: 100,
+    DOUBLE: 300,
+    TRIPLE: 500,
+    TETRIS: 800,
+    SOFT_DROP: 1,
+    HARD_DROP: 15
+}
+Object.freeze(POINTS);
+
+const LEVEL = {
+    0: 1000,
+    1: 900,
+    2: 800,
+    3: 700,
+    4: 600,
+    5: 500
+}
+Object.freeze(LEVEL);
+
+time = {start: 0, elapsed: 0, level: LEVEL["0"]};
+
+function refreshBoard() {
+    tetrisboard_ctx.clearRect(0, 0, tetrisboard_ctx.canvas.width, tetrisboard_ctx.canvas.height);
+    board.drawBoard();
+}
+
 document.addEventListener('keydown', event => {
     if (moves[event.code]) {
         event.preventDefault();
@@ -44,13 +75,20 @@ document.addEventListener('keydown', event => {
                     p = moves[KEY.DOWN](board.piece);
                 }
                 board.piece.freeze();
+                clearLine();
+                refreshBoard();
+                drawPiece();
+                points += POINTS.HARD_DROP;
+                document.getElementById("score").innerHTML = points;
             } else {
                 board.piece.move(p);
+                refreshBoard();
+                board.piece.draw();
+                if (event.code === KEY.DOWN) {
+                    points += POINTS.SOFT_DROP;
+                    document.getElementById("score").innerHTML = points;
+                }
             }
-            tetrisboard_ctx.clearRect(0, 0, tetrisboard_ctx.canvas.width, tetrisboard_ctx.canvas.height);
-
-            board.piece.draw();
-            board.drawBoard();
         } else {
             if (event.code === KEY.UP) {
                 board.piece.rotate();
@@ -93,7 +131,7 @@ class Board {
                 return (
                     this.isEmpty(value) ||
                     (this.insideWalls(x) &&
-                        this.aboveFloor(y) && board.grid[board.piece.y + dy + 1][board.piece.x + dx] === 0
+                        this.aboveFloor(y) && board.grid[y][x] === 0
                     )
                 );
             });
@@ -208,11 +246,7 @@ class Piece {
         });
     }
 }
-
 let board = new Board();
-let lines = 0;
-let clearedLines = 0;
-let points = 0;
 
 function resetHighscore() {
     window.localStorage.removeItem(TETRISHIGHSCORE_KEY);
@@ -223,29 +257,9 @@ const TETRISHIGHSCORE_KEY = "tetrisHighscore";
 let highscore = window.localStorage.getItem(TETRISHIGHSCORE_KEY) || 0;
 document.getElementById('tetrisHighscore').innerHTML = highscore;
 
-const POINTS = {
-    SINGLE: 100,
-    DOUBLE: 300,
-    TRIPLE: 500,
-    TETRIS: 800,
-    SOFT_DROP: 1,
-    HARD_DROP: 2
-}
-Object.freeze(POINTS);
-
-const LEVEL = {
-    0: 1000,
-    1: 900,
-    2: 800,
-    3: 700,
-    4: 600,
-    5: 500
-}
-Object.freeze(LEVEL);
-
-time = {start: 0, elapsed: 0, level: LEVEL["0"]};
-
 function drawPiece() {
+    board.piece.x = 3;
+    board.piece.y = 0;
     board.piece.typeId = board.piece.randomizeTetrominoType(7);
     board.piece.draw();
     animate();
@@ -337,9 +351,7 @@ function animate(now = 0) {
         time.start = now;
         if (drop()) {
             board.piece.y += 1;
-            tetrisboard_ctx.clearRect(0, 0, tetrisboard_ctx.canvas.width, tetrisboard_ctx.canvas.height);
-
-            board.drawBoard();
+            refreshBoard();
             board.piece.draw();
         } else {
             if (board.piece.y === 0) {
@@ -347,12 +359,9 @@ function animate(now = 0) {
                 return;
             }
             board.piece.freeze();
-            clearLine();
             console.table(board.grid);
-
-            board.drawBoard();
-            board.piece.x = 3;
-            board.piece.y = 0;
+            clearLine();
+            refreshBoard();
             drawPiece();
             return
         }
