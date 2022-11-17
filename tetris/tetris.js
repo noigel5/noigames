@@ -5,10 +5,17 @@ const BLOCK_SIZE = 30;
 const tetrisboard = document.getElementById("board");
 const tetrisboard_ctx = tetrisboard.getContext("2d");
 
+const nextboard = document.getElementById("next");
+const nextboard_ctx = nextboard.getContext("2d");
+
 tetrisboard_ctx.canvas.width = COLS * BLOCK_SIZE;
 tetrisboard_ctx.canvas.height = ROWS * BLOCK_SIZE;
 
+nextboard_ctx.canvas.width = 6 * BLOCK_SIZE;
+nextboard_ctx.canvas.height = 6 * BLOCK_SIZE;
+
 tetrisboard_ctx.scale(BLOCK_SIZE, BLOCK_SIZE);
+nextboard_ctx.scale(BLOCK_SIZE, BLOCK_SIZE);
 
 const KEY = {
     LEFT: 'ArrowLeft',
@@ -151,6 +158,7 @@ class Board {
 }
 
 class Piece {
+    typeId = 0;
     constructor(ctx) {
         this.ctx = ctx;
         this.COLORS = [
@@ -209,8 +217,8 @@ class Piece {
     }
 
     draw() {
-        this.ctx.fillStyle = this.COLORS[board.piece.typeId];
-        this.SHAPES[board.piece.typeId].forEach((row, y) => {
+        this.ctx.fillStyle = this.COLORS[this.typeId];
+        this.SHAPES[this.typeId].forEach((row, y) => {
             row.forEach((value, x) => {
                 if (value > 0) {
                     this.ctx.fillRect(this.x + x, this.y + y, 1, 1);
@@ -225,22 +233,22 @@ class Piece {
     }
 
     rotate() {
-        for (let y = 0; y < this.SHAPES[board.piece.typeId].length; ++y) {
+        for (let y = 0; y < this.SHAPES[this.typeId].length; ++y) {
             for (let x = 0; x < y; ++x) {
-                [this.SHAPES[board.piece.typeId][x][y], this.SHAPES[board.piece.typeId][y][x]] = [this.SHAPES[board.piece.typeId][y][x], this.SHAPES[board.piece.typeId][x][y]];
+                [this.SHAPES[this.typeId][x][y], this.SHAPES[this.typeId][y][x]] = [this.SHAPES[this.typeId][y][x], this.SHAPES[this.typeId][x][y]];
             }
         }
 
-        this.SHAPES[board.piece.typeId].forEach(row => row.reverse());
+        this.SHAPES[this.typeId].forEach(row => row.reverse());
 
         return this;
     }
 
     freeze() {
-        board.piece.SHAPES[board.piece.typeId].forEach((row, y) => {
+        this.SHAPES[this.typeId].forEach((row, y) => {
             row.forEach((value, x) => {
                 if (value > 0) {
-                    board.grid[y + board.piece.y][x + board.piece.x] = value;
+                    board.grid[y + this.y][x + this.x] = value;
                 }
             });
         });
@@ -260,9 +268,18 @@ document.getElementById('tetrisHighscore').innerHTML = highscore;
 function drawPiece() {
     board.piece.x = 3;
     board.piece.y = 0;
-    board.piece.typeId = board.piece.randomizeTetrominoType(7);
-    board.piece.draw();
+    board.piece.typeId = board.nextpiece.typeId;
+    board.nextpiece.draw();
+    drawNextpiece();
     animate();
+}
+
+function drawNextpiece() {
+    board.nextpiece.x = 1;
+    board.nextpiece.y = 1;
+    board.nextpiece.typeId = board.piece.randomizeTetrominoType(7);
+    nextboard_ctx.clearRect(0, 0, nextboard_ctx.canvas.width, nextboard_ctx.canvas.height);
+    board.nextpiece.draw();
 }
 
 function play() {
@@ -275,8 +292,14 @@ function play() {
     document.getElementById("lines").innerHTML = lines;
 
     board.piece = new Piece(tetrisboard_ctx);
+    board.nextpiece = new Piece(nextboard_ctx);
 
-    drawPiece();
+    drawNextpiece();
+    board.piece.x = 3;
+    board.piece.y = 0;
+    board.piece.typeId = board.piece.randomizeTetrominoType(7);
+    board.piece.draw();
+    animate();
 }
 
 function drop() {
