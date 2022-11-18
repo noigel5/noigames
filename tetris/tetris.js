@@ -288,6 +288,9 @@ function play() {
 
     points = 0;
     lines = 0;
+    time.level = LEVEL["0"];
+
+    document.getElementById("level").innerHTML = "0";
     document.getElementById("score").innerHTML = points;
     document.getElementById("lines").innerHTML = lines;
 
