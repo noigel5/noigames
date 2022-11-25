@@ -1,0 +1,98 @@
+@startuml
+
+skinparam rectangleBackgroundColor lightblue
+
+rectangle Baloise {
+
+    component Layer7
+
+    component Keycloak
+    note top
+        Level of Security,
+        Permissions to be clarified
+    end note
+    component "MF-Admin Rest Service" as MFA_REST_SVC
+
+    component openshift {
+        component credentials
+
+        database Postgres {
+            database cache
+            database eurotax
+        }
+    }
+
+    component "nl-vehicle-master-data" as system {
+
+        package "Service" {
+            package Provider {
+                component "Auto-i" as autoi_svc_comp
+                component Astra as astra_svc_comp
+                note bottom
+                  To be clarified
+                  how to connect
+                end note
+                component "MF-Admin" as mfa_svc_comp
+                component Eurotax as etx_svc_comp
+
+                autoi_svc_comp -down--> Layer7
+            }
+            component Finder
+            interface VehicleService
+            Finder .down.> VehicleService : implements
+
+            package "Import" {
+                interface "IEurotaxImporter"
+                component "EurotaxImporter" as ETX_IMPORT_IMPL
+                ETX_IMPORT_IMPL ..> IEurotaxImporter : implements
+            }
+        }
+
+        package "Domain" {
+        }
+
+        package "Repository" {
+            interface MasterDataRepository
+            interface EurotaxRepository
+
+            Finder -> Provider : use
+
+        }
+
+        Repository -> Domain : abstracts entities
+        MasterDataRepository <-- Finder : uses
+        EurotaxRepository <-- ETX_IMPORT_IMPL : uses
+        EurotaxRepository <-- etx_svc_comp : uses
+
+        package "infrastrucutre" {
+          package DBLayer {
+            component ORM
+            component "Entites"
+          }
+          package "API" {
+            component ConsumerAPI
+            component AdminAPI
+            component Dto
+          }
+
+          IEurotaxImporter <-- AdminAPI
+          DBLayer --> Postgres :connects
+        }
+
+        Repository <..... DBLayer : "implements\nread/write\nand mapping"
+
+        VehicleService <-- ConsumerAPI : "read data"
+        interface "OpenAPI Specification" as openAPI
+        API ..> openAPI : " provides"
+    }
+
+    mfa_svc_comp --> MFA_REST_SVC : uses
+    system ..> openshift : "operated on"
+}
+
+cloud  {
+  interface "Auto-I-Dat" as autoisvc
+  Layer7 ..> autoisvc
+}
+
+@enduml

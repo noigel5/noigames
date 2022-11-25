@@ -172,6 +172,9 @@ Methoden die das ganze wiederholen, die die Form und das Board reseten wenn game
 Wenn man am Schluss alle diese Methode zusammen nimmt und in die richtige Reihenfolge bringt,  
 funktioniert das Tetris Spiel automatisch.
 
+**Form**  
+
+
 **Ebene 1**
 Tetris
 
@@ -183,11 +186,13 @@ Pieces
 
 ## Whitebox Gesamtsystem
 
-| Ebene 1    | Ebene 2               | Ebene 3              |
-|------------|-----------------------|----------------------|
-| Hauptseite | html, css             | div, button, main... |
-| Tetris     | JavaScript, html, css | div, button, main... |
-| Snake      | JavaScript, html, css | div, button, main... |
+| Ebene 1    | Ebene 2 | Ebene 3      |
+|------------|---------|--------------|
+| Hauptseite | button  | button name  |
+| Tetris     | Board   | piece        |
+| Snake      | Board   | snake, apple |
+
+![](images/bausteinsichtForm.png)
 
 Begründung
 
@@ -229,27 +234,22 @@ Wichtige Schnittstellen
   - Auf dieser Seite kann man das Spiel Snake spielen.
 
 ## Ebene 2
-### JavaScript  
+### Board  
 
-- Übernimmt die Funktionsfähigkeit der Spiele, also die ganze Logik.
+- in diesem Board werden dann alle Funktionen angezeigt.
 
-### html
+### Buttons
 
-- Das wird benötigt, um das was in der JavaScript Datei steht, anzuzeigen.
-
-### css
-
-- Diese Datei ist optional, aber sie verschönert die Seite um einiges und macht so das benutzen nutzerfreundlicher.  
+- die buttons sind dafür da, das Spiel zu starten, den highscore zu reseten und um zurück auf die Hauptseite zu kommen,  
+  je nachdem welchen button man drückt.  
 
 ## Ebene 3
 ### Whitebox JavaScript
 
-- move()
-  - diese Methode ist dazu da, das Piece zu bewegen
-- drawPiece()
-  - diese Methode ist dazu da, das Piece zu malen. Das Board ist wie eine Wandtafel und diese Methode ist die Kreide.
-- clearLine()
-  - diese Methode entfernt eine Linie, wenn sie komplett ausgefüllt ist.
+- Tetris
+  - das Board zeigt die pieces an, die langsam runter fallen.
+- Snake
+  - das Board zeigt hier die snake an und den Apfel
 
 # Laufzeitsicht
 
@@ -291,44 +291,20 @@ Hierfür habe ich zu wenig Anpassungsmöglichkeiten.
 
 **Form**
 
-Server <- Github <- Projekt
+![](images/infrastruktur.png)
 
 ## Infrastruktur Ebene 1
 
-An dieser Stelle beschreiben Sie (als Kombination von Diagrammen mit
-Tabellen oder Texten):
-
-- die Verteilung des Gesamtsystems auf mehrere Standorte, Umgebungen,
-  Rechner, Prozessoren o. Ä., sowie die physischen Verbindungskanäle
-  zwischen diesen,
-
-- wichtige Begründungen für diese Verteilungsstruktur,
-
-- Qualitäts- und/oder Leistungsmerkmale dieser Infrastruktur,
-
-- Zuordnung von Softwareartefakten zu Bestandteilen der Infrastruktur
-
-Für mehrere Umgebungen oder alternative Deployments kopieren Sie diesen
-Teil von arc42 für alle wichtigen Umgebungen/Varianten.
-
-Snake <-- Hauptseite --> Tetris
-
-Begründung
-
-:   *\<Erläuternder Text\>*
-
-Qualitäts- und/oder Leistungsmerkmale
-
-:   *\<Erläuternder Text\>*
-
-Zuordnung von Bausteinen zu Infrastruktur
-
-:   *\<Beschreibung der Zuordnung\>*
+In der 1. Ebene wird alles in Seiten aufgebaut.  
+Bis jetzt habe ich 3 Seiten: Hauptseite, Tetris und Snake.  
+Wenn ich Lust habe, könnte ich noch mehr Spiele hinzufügen.
 
 ## Infrastruktur Ebene 2
 
-In jeder 2. Ebene ist alles gleich aufgebaut, ausser die Hauptseite, da sie keine Funktionen hat,  
-wie die Spiele mit JavaScript.  
+In der 2. Ebene werden die einzelnen Seiten in Programmiersprache unterteilt.  
+Die Spiele jeweils haben 3 Sprachen: html, JavaScript und css.  
+Die einzige ausnahem ist die Hauptseite, da die nur 2 Sprachen hat: html und css, weil diese Seite keine besonderen Funktionen hat,  
+ausser das Anzeige der verschieden Spiele.  
 
 # Querschnittliche Konzepte
 **Inhalt**
@@ -351,9 +327,7 @@ Themen gehören, beispielsweise:
 
 - Implementierungsregeln
 
-::: formalpara-title
 **Motivation**
-:::
 
 Konzepte bilden die Grundlage für *konzeptionelle Integrität*
 (Konsistenz, Homogenität) der Architektur und damit eine wesentliche
@@ -362,26 +336,9 @@ Grundlage für die innere Qualität Ihrer Systeme.
 Manche dieser Themen lassen sich nur schwer als Baustein in der
 Architektur unterbringen (z.B. das Thema „Sicherheit").
 
-::: formalpara-title
 **Form**
-:::
 
-Kann vielfältig sein:
-
-- Konzeptpapiere mit beliebiger Gliederung,
-
-- übergreifende Modelle/Szenarien mit Notationen, die Sie auch in den
-  Architektursichten nutzen,
-
-- beispielhafte Implementierung speziell für technische Konzepte,
-
-- Verweise auf „übliche" Nutzung von Standard-Frameworks
-  (beispielsweise die Nutzung von Hibernate als Object/Relational
-  Mapper).
-
-::: formalpara-title
 **Struktur**
-:::
 
 Eine mögliche (nicht aber notwendige!) Untergliederung dieses
 Abschnittes könnte wie folgt aussehen (wobei die Zuordnung von Themen zu
