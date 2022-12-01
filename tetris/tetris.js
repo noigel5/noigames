@@ -256,14 +256,14 @@ class Piece {
 }
 let board = new Board();
 
-function resetHighscore() {
-    window.localStorage.removeItem(TETRISHIGHSCORE_KEY);
-    document.getElementById('record').innerHTML = 0;
-}
-
 const TETRISHIGHSCORE_KEY = "tetrisHighscore";
 let highscore = window.localStorage.getItem(TETRISHIGHSCORE_KEY) || 0;
 document.getElementById('tetrisHighscore').innerHTML = highscore;
+
+function resetHighscore() {
+    window.localStorage.removeItem(TETRISHIGHSCORE_KEY);
+    document.getElementById('record').innerHTML = "0";
+}
 
 function drawPiece() {
     board.piece.x = 3;

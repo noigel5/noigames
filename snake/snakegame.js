@@ -135,7 +135,7 @@ function move_snake() {
 
 function resetHighscore() {
     window.localStorage.removeItem(HIGHSCORE_KEY);
-    document.getElementById('record').innerHTML = 0;
+    document.getElementById('record').innerHTML = "0";
 }
 
 function input(event) {
