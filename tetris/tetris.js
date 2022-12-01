@@ -262,7 +262,7 @@ document.getElementById('tetrisHighscore').innerHTML = highscore;
 
 function resetHighscore() {
     window.localStorage.removeItem(TETRISHIGHSCORE_KEY);
-    document.getElementById('record').innerHTML = "0";
+    document.getElementById('tetrisHighscore').innerHTML = "0";
 }
 
 function drawPiece() {
