@@ -1,7 +1,6 @@
 describe('spec', () => {
   it('Hauptseite', () => {
-    cy.visit('https://noigel5.github.io/noigames/');
-
+    cy.visit('/');
     cy.get('#title').should('exist').and('have.text', 'Hauptseite');
 
     cy.get('.description').should('exist').and('have.text', 'Games:');
@@ -33,9 +32,16 @@ describe('spec', () => {
     cy.get('#title').should('have.text', 'PAUSED');
     cy.get('input').type(' ');
     cy.get('#title').should('have.text', '0');
+    cy.wait(2000);
     cy.get('#title').should('have.text', 'Game Over');
     cy.get('input').type('{enter}');
     cy.get('#title').should('have.text', '0');
+    cy.wait(50);
+    cy.get('input').type('{upArrow}');
+    cy.wait(30);
+    cy.get('input').type('{leftArrow}');
+    cy.get('input').type('{downArrow}');
+    cy.get('#title').should('have.text', 'Game Over');
 
     cy.get('#record').should('exist').and('have.text', '10');
     cy.get('button').eq(0).click();
@@ -55,16 +61,22 @@ describe('spec', () => {
     cy.get('#score').should('exist').and('have.text', '0');
     cy.get('#lines').should('exist').and('have.text', '0');
     cy.get('#level').should('exist').and('have.text', '0');
-
     cy.get('#tetrisHighscore').should('have.text', '10');
+
+    cy.get('canvas').should('exist').and('have.length', '2');
 
     cy.get('button').should('exist').and('have.length', '3');
     cy.get('button').eq(1).should('exist').and('have.text', 'Reset').click();
+    cy.get('#tetrisHighscore').should('have.text', '0');
 
     cy.get('.play-button').should('exist').and('have.text', 'Play').click();
     cy.get('input').type(' ', {force: true});
     cy.get('#score').should('have.text', '15');
     cy.get('input').type('{downArrow}', {force: true});
     cy.get('#score').should('have.text', '16');
+    cy.get('.play-button').should('exist').and('have.text', 'Play').click();
+    cy.get('#score').should('have.text', '0');
+    cy.get('button').eq(2).should('exist').and('have.text', 'Hauptseite').click();
+    cy.url().should('eq', 'https://noigel5.github.io/noigames/index.html');
   });
 })
