@@ -35,7 +35,7 @@ describe('spec', () => {
     cy.get('#title').should('have.text', 'PAUSED');
     cy.get('input').type(' ');
     cy.get('#title').should('have.text', '0');
-    cy.wait(2000);
+    cy.wait(2200);
     cy.get('#title').should('have.text', 'Game Over');
     cy.get('input').type('{enter}');
     cy.get('#title').should('have.text', '0');
