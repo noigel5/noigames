@@ -11,6 +11,9 @@ describe('spec', () => {
     const HIGHSCORE_KEY = "snakeHighscore";
     window.localStorage.setItem(HIGHSCORE_KEY, "10");
 
+    cy.get('body').should('have.css', 'background-color', 'rgb(24, 24, 24)');
+    cy.get('button').should('have.css', 'background-color', 'rgb(56, 56, 56)');
+
     cy.get('button').eq(0).should('have.text', 'Snake').click();
   })
   it('Snake', () => {
@@ -50,6 +53,9 @@ describe('spec', () => {
     const TETRISHIGHSCORE_KEY = "tetrisHighscore";
     window.localStorage.setItem(TETRISHIGHSCORE_KEY, "10");
 
+    cy.get('body').should('have.css', 'background-color', 'rgb(24, 24, 24)');
+    cy.get('button').should('have.css', 'background-color', 'rgb(56, 56, 56)');
+
     cy.get('button').eq(1).should('have.text', 'Hauptseite').click();
     cy.url().should('eq', 'https://noigel5.github.io/noigames/index.html');
     cy.get('button').eq(1).click();
@@ -76,6 +82,10 @@ describe('spec', () => {
     cy.get('#score').should('have.text', '16');
     cy.get('.play-button').should('exist').and('have.text', 'Play').click();
     cy.get('#score').should('have.text', '0');
+
+    cy.get('body').should('have.css', 'background-color', 'rgb(24, 24, 24)');
+    cy.get('button').should('have.css', 'background-color', 'rgb(56, 56, 56)');
+
     cy.get('button').eq(2).should('exist').and('have.text', 'Hauptseite').click();
     cy.url().should('eq', 'https://noigel5.github.io/noigames/index.html');
   });
