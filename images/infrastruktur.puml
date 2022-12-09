@@ -46,15 +46,17 @@ package GithubRepo{
         package Tetris {
             package html as h2 {
                 component 3 [
-                    title
-                    highscore
-                    score
-                    lines
-                    level
-                    board
-                    nextBoard
-                    playButton
-                    hauptseiteButton
+                    canvas id="board"
+                ]
+                component 11 [
+                    span id"score"
+                    span id"highscore"
+                    span id"lines"
+                    span id"level"
+                ]
+                component 12 [
+                    div id="title"
+                    button
                 ]
             }
             package css as c2{
@@ -68,27 +70,31 @@ package GithubRepo{
             }
             package JavaScript as j1 {
                 component 5 [
-                    refreshBoard()
-                    resetHighscore()
-                    drawPiece()
-                    drawNextPiece()
-                    play()
-                    drop()
-                    gameOver()
-                    clearLine()
-                    animate
+                    board
+                ]
+                component 9 [
+                    piece
+                ]
+                component 10 [
+                    score
+                    highscore
+                    lines
+                    level
                 ]
             }
         }
         package Snake {
             package html as h3 {
                 component 6 [
-                    score
-                    highscore
-                    board
-                    boardSizeSlider
-                    hauptseiteButton
-                    description
+                    canvas id="board"
+                ]
+                component 15 [
+                    span id"score"
+                    span id"highscore"
+                ]
+                component 16 [
+                div id="title"
+                    button
                 ]
             }
             package css as c3 {
@@ -100,31 +106,36 @@ package GithubRepo{
             }
             package JavaScript as j2{
                 component 8 [
-                    move()
-                    onTick()
-                    main()
-                    clearCanvas()
-                    drawSnake()
-                    drawHead()
-                    drawSnakePart()
-                    move_snake()
-                    resetHighscore()
-                    input()
-                    random_food()
-                    generateFoodX()
-                    generateFoodY()
-                    hasEaten()
-                    drawFood()
+                    board
+                ]
+                component 12 [
+                    snake
+                ]
+                component 13 [
+                    apple
+                ]
+                component 14 [
+                    score
+                    highscore
                 ]
             }
         }
     }
 }
 Hauptseite <--> Snake
-Tetris <--> Hauptseite
+Tetris <----> Hauptseite
 
 ServerHauptseite <--> ServerTetris
 ServerHauptseite <--> ServerSnake
 
 GithubRepo --> GithubServer
+5 <- 9
+5 --> 3
+10 -> 11
+c2 --> h2
+8 <- 12
+8 <-- 13
+14 --> 15
+8 -> 6
+c3 --> h3
 @enduml
