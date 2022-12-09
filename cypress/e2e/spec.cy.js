@@ -74,7 +74,8 @@ describe('spec', () => {
         cy.get('#lines').should('exist').and('have.text', '0');
         cy.get('#level').should('exist').and('have.text', '0');
     });
-    it('canvas and backgroundcolor set ', () => {
+    it('tetris canvas and backgroundcolor set ', () => {
+        cy.visit('https://noigel5.github.io/noigames/tetris/tetris.html');
         cy.get('canvas').should('exist').and('have.length', '2');
 
         cy.get('body').should('have.css', 'background-color', 'rgb(24, 24, 24)');
