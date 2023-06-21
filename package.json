@@ -1,6 +1,7 @@
 {
   "name": "snakegame",
   "version": "1.0.0",
-  "dependencies": {
+  "devDependencies": {
+    "cypress": "^11.2.0"
   }
 }
